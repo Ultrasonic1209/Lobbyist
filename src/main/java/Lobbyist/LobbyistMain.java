@@ -12,7 +12,7 @@ import org.slf4j.Logger;
 
 import java.util.NoSuchElementException;
 
-@Plugin(id = "lobbyist", name = "Lobbyist", version = "0.1.0-SNAPSHOT",
+@Plugin(id = "lobbyist", name = "Lobbyist", version = "1.0.0",
         url = "https://ultras-playroom.xyz", description = "Takes you to the lobby.", authors = {"Ultrasonic#7662"})
 public class LobbyistMain {
 
