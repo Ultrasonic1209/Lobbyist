@@ -39,3 +39,7 @@ gradle-app.setting
 
 # Cache of project
 .gradletasknamecache
+.gradle/file-system.probe
+*.lock
+.gradle/7.3/fileHashes/resourceHashesCache.bin
+.gradle/7.3/executionHistory/executionHistory.bin
