@@ -101,7 +101,7 @@ public final class Lobby implements SimpleCommand {
         }
 
         List<Player> players = (List<Player>) this.proxy.getAllPlayers();
-        ArrayList plrNames = new ArrayList<String>();
+        ArrayList<String> plrNames = new ArrayList<>();
 
         players.forEach(player -> plrNames.add(player.getUsername()));
 

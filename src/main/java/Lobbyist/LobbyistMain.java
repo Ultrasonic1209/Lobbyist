@@ -13,7 +13,7 @@ import org.slf4j.Logger;
 import java.util.NoSuchElementException;
 
 @Plugin(id = "lobbyist", name = "Lobbyist", version = "1.0.0",
-        url = "https://ultras-playroom.xyz", description = "Takes you to the lobby.", authors = {"Ultrasonic#7662"})
+        url = "https://github.com/Ultrasonic1209/Lobbyist", description = "An easy-to-use lobby plugin.", authors = {"Ultrasonic#7662"})
 public class LobbyistMain {
 
     private final ProxyServer server;
