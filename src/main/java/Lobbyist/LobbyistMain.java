@@ -18,7 +18,7 @@ public class LobbyistMain {
 
     private final ProxyServer server;
     private final Logger logger;
-    private CommandManager commandManager;
+    private final CommandManager commandManager;
     @Inject
     public LobbyistMain(ProxyServer server, Logger logger) {
         this.server = server;
