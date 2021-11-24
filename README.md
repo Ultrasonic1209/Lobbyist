@@ -1,5 +1,5 @@
 # Lobbyist
- An intuitive and easy-to-use /lobby plugin for Velocity 3.
+ An intuitive and easy-to-use /lobby plugin for [Velocity](https://github.com/PaperMC/Velocity).
  
 Also binds to `/l` and `/hub`.
  
