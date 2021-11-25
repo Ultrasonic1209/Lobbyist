@@ -28,9 +28,7 @@ public class LobbyistMain {
     private final CommandManager commandManager;
     private final Path dataDirectory;
 
-    private @Nullable String configuredServer;
-    private boolean registerL = true;
-    private boolean registerHub = true;
+    private RegisteredServer lobby;
 
     @Inject
     public LobbyistMain(ProxyServer server, Logger logger, @DataDirectory Path dataDirectory) {
@@ -63,39 +61,43 @@ public class LobbyistMain {
             return;
         }
 
-        this.configuredServer = root.node("server-name").getString();
+        String configuredServer = root.node("server-name").getString();
 
-        if (this.configuredServer == null) {
-            this.logger.warn("Invalid lobbyist.conf! Repairing...");
+        if (configuredServer == null) {
+            this.logger.warn("Lobbyist is regenerating your lobbyist.conf.");
             try {
+                root.node("register-l").set(true);
+                root.node("register-hub").set(true);
                 root.node("server-name").set("lobby");
                 loader.save(root);
             } catch (final ConfigurateException e) {
                 this.logger.error("Unable to recreate lobbyist.conf: " + e.getMessage());
                 return;
             }
+            configuredServer = "lobby";
         }
 
-        RegisteredServer lobby;
+        boolean registerL = root.node("register-l").getBoolean();
+        boolean registerHub = root.node("register-hub").getBoolean();
 
         try {
-            lobby = this.server.getServer(this.configuredServer).get();
+            this.lobby = this.server.getServer(configuredServer).get();
         } catch (NoSuchElementException exc) {
-            this.logger.error("Configured server (" + this.configuredServer + ") was not found. Lobbyist will not initialise.");
+            this.logger.error("Configured server (" + configuredServer + ") was not found. Lobbyist will not initialise.");
             return;
         }
 
         CommandMeta.Builder proto = this.commandManager.metaBuilder("lobby");
 
-        if (this.registerHub) {
+        if (registerHub) {
             proto.aliases("hub");
         }
-        if (this.registerL) {
+        if (registerL) {
             proto.aliases("l");
         }
 
         CommandMeta meta = proto.build();
 
-        this.commandManager.register(meta, new Lobby(server, lobby));
+        this.commandManager.register(meta, new Lobby(this.server, this.lobby));
     }
 }
