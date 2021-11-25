@@ -43,3 +43,4 @@ gradle-app.setting
 *.lock
 .gradle/7.3/fileHashes/resourceHashesCache.bin
 .gradle/7.3/executionHistory/executionHistory.bin
+*.probe
