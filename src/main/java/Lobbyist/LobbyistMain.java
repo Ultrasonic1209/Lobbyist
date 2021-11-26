@@ -14,10 +14,8 @@ import org.spongepowered.configurate.CommentedConfigurationNode;
 import org.spongepowered.configurate.ConfigurateException;
 import org.spongepowered.configurate.hocon.HoconConfigurationLoader;
 
-import javax.annotation.Nullable;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.NoSuchElementException;
 
 @Plugin(id = "lobbyist", name = "Lobbyist", version = "1.1.1",
         url = "https://github.com/Ultrasonic1209/Lobbyist", description = "An easy-to-use lobby plugin.", authors = {"Ultrasonic#7662"})
@@ -80,12 +78,11 @@ public class LobbyistMain {
         boolean registerL = root.node("register-l").getBoolean();
         boolean registerHub = root.node("register-hub").getBoolean();
 
-        try {
-            this.lobby = this.server.getServer(configuredServer).get();
-        } catch (NoSuchElementException exc) {
+        if (this.server.getServer(configuredServer).isEmpty()) {
             this.logger.error("Configured server (" + configuredServer + ") was not found. Lobbyist will not initialise.");
             return;
         }
+        this.lobby = this.server.getServer(configuredServer).get();
 
         CommandMeta.Builder proto = this.commandManager.metaBuilder("lobby");
 

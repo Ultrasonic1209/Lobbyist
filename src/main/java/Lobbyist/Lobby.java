@@ -37,10 +37,10 @@ public final class Lobby implements SimpleCommand {
         Player player = null;
 
         Optional<Player> target = Optional.empty();
+        boolean isSamePlayer = false;
         if (args.length == 1) {
 
             target = this.proxy.getPlayer(args[0]);
-            boolean isSamePlayer = false;
 
             if (target.isPresent()) {
                 isSamePlayer = target.get().equals(source);
@@ -81,24 +81,26 @@ public final class Lobby implements SimpleCommand {
                 source.sendMessage(Component.text("You're already in the lobby!").color(NamedTextColor.RED));
             }
             return;
-        } else if ((console) || (args.length == 1)) {
-            source.sendMessage(Component.text("Sending " + player.getUsername() + " to the lobby.").color(NamedTextColor.GREEN));
         }
 
+        ConnectionRequestBuilder connector = (player).createConnectionRequest(this.server);
 
-        //source.sendMessage(Component.text("Hello!").color(NamedTextColor.AQUA));
+        Player fPlayer = player;
+        boolean fIsSamePlayer = isSamePlayer;
 
-        try {
-            ConnectionRequestBuilder connector = (player).createConnectionRequest(this.server);
-            connector.connect().thenAccept(result -> {
-                if (!result.isSuccessful()) {
-                    source.sendMessage(Component.text("Unable to connect to the lobby.\n" + result.getReasonComponent()).color(NamedTextColor.RED));
-                }
-            });
-        } catch (Exception exception) {
+        connector.connect().thenAccept(result -> {
+            if (!result.isSuccessful()) {
+                source.sendMessage(Component.text("Unable to connect to the lobby.").color(NamedTextColor.RED));
+                result.getReasonComponent().ifPresent(source::sendMessage);
+
+            } else if ((console) || (args.length == 1 && !fIsSamePlayer)) {
+                source.sendMessage(Component.text("Sent " + fPlayer.getUsername() + " to the lobby.").color(NamedTextColor.GREEN));
+            }
+        }).exceptionally(exception -> {
             this.logger.error("Lobbyist has encountered an error:", exception);
-            source.sendMessage(Component.text("An internal error occurred while connecting to the lobby.").color(NamedTextColor.RED));
-        }
+            source.sendMessage(Component.text("Unable to connect to the lobby. More information is available in the server log.").color(NamedTextColor.RED));
+            return null;
+        });
     }
 
     @Override
