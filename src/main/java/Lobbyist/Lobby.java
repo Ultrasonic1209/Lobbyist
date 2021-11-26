@@ -7,6 +7,7 @@ import com.velocitypowered.api.proxy.*;
 import com.velocitypowered.api.proxy.server.RegisteredServer;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import org.slf4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,11 +17,13 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public final class Lobby implements SimpleCommand {
     RegisteredServer server;
     ProxyServer proxy;
+    Logger logger;
 
-    public Lobby(ProxyServer proxy, RegisteredServer server) {
+    public Lobby(ProxyServer proxy, RegisteredServer server, Logger logger) {
         super();
         this.proxy = proxy;
         this.server = server;
+        this.logger = logger;
     }
 
     @Override
@@ -79,18 +82,23 @@ public final class Lobby implements SimpleCommand {
             }
             return;
         } else if ((console) || (args.length == 1)) {
-            source.sendMessage(Component.text(player.getUsername() + " was successfully sent to the lobby.").color(NamedTextColor.GREEN));
+            source.sendMessage(Component.text("Sending " + player.getUsername() + " to the lobby.").color(NamedTextColor.GREEN));
         }
 
 
         //source.sendMessage(Component.text("Hello!").color(NamedTextColor.AQUA));
 
-        ConnectionRequestBuilder connector = ((Player) source).createConnectionRequest(this.server);
-        connector.connect().thenAccept(result -> {
-            if (!result.isSuccessful()) {
-                source.sendMessage(Component.text("Unable to send you to the lobby.\n" + result.getReasonComponent()).color(NamedTextColor.RED));
-            }
-        });
+        try {
+            ConnectionRequestBuilder connector = (player).createConnectionRequest(this.server);
+            connector.connect().thenAccept(result -> {
+                if (!result.isSuccessful()) {
+                    source.sendMessage(Component.text("Unable to connect to the lobby.\n" + result.getReasonComponent()).color(NamedTextColor.RED));
+                }
+            });
+        } catch (Exception exception) {
+            this.logger.error("Lobbyist has encountered an error:", exception);
+            source.sendMessage(Component.text("An internal error occurred while connecting to the lobby.").color(NamedTextColor.RED));
+        }
     }
 
     @Override

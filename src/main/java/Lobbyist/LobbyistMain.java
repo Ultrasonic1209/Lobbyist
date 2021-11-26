@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.NoSuchElementException;
 
-@Plugin(id = "lobbyist", name = "Lobbyist", version = "1.1.0",
+@Plugin(id = "lobbyist", name = "Lobbyist", version = "1.1.1",
         url = "https://github.com/Ultrasonic1209/Lobbyist", description = "An easy-to-use lobby plugin.", authors = {"Ultrasonic#7662"})
 public class LobbyistMain {
 
@@ -98,6 +98,6 @@ public class LobbyistMain {
 
         CommandMeta meta = proto.build();
 
-        this.commandManager.register(meta, new Lobby(this.server, this.lobby));
+        this.commandManager.register(meta, new Lobby(this.server, this.lobby, this.logger));
     }
 }
