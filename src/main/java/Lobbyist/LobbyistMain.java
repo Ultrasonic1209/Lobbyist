@@ -17,7 +17,7 @@ import org.spongepowered.configurate.hocon.HoconConfigurationLoader;
 import java.io.IOException;
 import java.nio.file.Path;
 
-@Plugin(id = "lobbyist", name = "Lobbyist", version = "1.1.1",
+@Plugin(id = "lobbyist", name = "Lobbyist", version = "1.1.2",
         url = "https://github.com/Ultrasonic1209/Lobbyist", description = "An easy-to-use lobby plugin.", authors = {"Ultrasonic#7662"})
 public class LobbyistMain {
 
@@ -38,7 +38,7 @@ public class LobbyistMain {
     }
 
     public static void main(String[] args) {
-        System.err.println("This plugin is intended to be run as a Velocity plugin.");
+        System.err.println("This jarfile is intended to be run as a Velocity plugin.");
     }
 
     @Subscribe

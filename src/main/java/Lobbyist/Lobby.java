@@ -83,7 +83,7 @@ public final class Lobby implements SimpleCommand {
             return;
         }
 
-        ConnectionRequestBuilder connector = (player).createConnectionRequest(this.server);
+        ConnectionRequestBuilder connector = player.createConnectionRequest(this.server);
 
         Player fPlayer = player;
         boolean fIsSamePlayer = isSamePlayer;
